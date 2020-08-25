@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Home | Your Store's Name</title>
+    <link href="/css/admin/admin.css" rel="stylesheet">
+    <link href="/css/admin/products.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js" integrity="sha512-VZ6m0F78+yo3sbu48gElK4irv2dzPoep8oo9LEjxviigcnnnNvnTOJRSrIhuFk68FMLOpiNz+T77nNY89rnWDg==" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/js/admin/orders.js"></script>
+
+  </head>
+<body>
+<nav class="menu" tabindex="0">
+	<div class="smartphone-menu-trigger"></div>
+  <header class="avatar">
+    <h2>
+      {{admin.email}}
+    </h2>
+  </header>
+  <ul>
+    <li tabindex="0" class="icon-dashboard"><a href="/admin/dashboard">Dashboard</a></li>
+    <li tabindex="0" class="icon-products"><a href="/admin/products">Products</a></li>
+    <li tabindex="0" class="icon-orders"><a href="/admin/orders">Orders</a></li>
+    <li tabindex="0" class="icon-analytics"><a href="/admin/analytics">Analytics</a></li>
+    <li tabindex="0" class="icon-settings"><a href="/admin/settings">Settings</a></li>
+    <li tabindex="0" ><a href="/admin/logout">Logout</a></li>
+  </ul>
+</nav>
+
+<main>
+
+  <div class="helper">
+
+
+
+    <div class="modal" data-modal="trigger-1">
+      <article class="content-wrapper" id="content-wrapper-product">
+        <button class="close"></button>
+        <div class="content">
+
+
+
+
+          <div class="centered">
+    <h2 id="product-view-message"></h2>
+    <div style="text-align: center; margin-bottom: 4em">
+      <img id="pi-view" style="width: 10em" src="" />
+    </div>
+
+      <div class="group">
+        <input class="product-input" type="text" id="pn-view"/>
+        <label class="product-name" for="pn-view">Name</label>
+        <div class="bar"></div>
+      </div>
+
+      <div class="group">
+        <input class="product-input" type="text" id="pd-view"/>
+        <label class="product-name" for="pd-view">Description</label>
+        <div class="bar"></div>
+      </div>
+
+
+      <div class="group">
+        <input class="product-input" type="text" id="pw-view"/>
+        <label class="product-name" for="pw-view">Weight</label>
+        <div class="bar"></div>
+      </div>
+
+      <div class="group">
+        <input class="product-input" type="text" id="pp-view"/>
+        <label class="product-name" for="pp-view">Price</label>
+        <div class="bar"></div>
+      </div>
+
+      <div>
+
+
+      </div>
+
+
+    </div>
+
+
+        </div>
+      </article>
+    </div>
+
+
+    <!-- Add product popup window end -->
+
+
+
+
+
+
+
+    <!-- new popup window -->
+
+
+
+
+    <div class="modal" data-modal="trigger-2">
+      <article class="content-wrapper" id="content-wrapper-orders">
+        <button class="close"></button>
+        <div class="content">
+
+
+
+
+          <div id="order-products" class="centered">
+            <h2 id="order-products-message"></h2>
+
+
+    </div>
+
+
+        </div>
+        <footer class="modal-footer">
+          <button class="action" onclick="updateShippingNumber()" style="margin-bottom: 1em">Process</button>
+        </footer>
+      </article>
+    </div>
+
+
+
+
+
+
+    <!-- end of new popup window -->
+
+    <!-- Procuts table -->
+    {{#if orders.length}}{{else}}<p> There are no orders to show{{/if}}
+    <div class="table-wrapper" style = "{{#if orders.length}}{{else}}display: none; {{/if}}margin-top: 2em" >
+        <table class="fl-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>User ID</th>
+                <th>Products</th>
+                <th>Date</th>
+                <th>Street</th>
+                <th>City</th>
+                <th>State</th>
+                <th>ZipCode</th>
+                <th>Amount</th>
+                <th>Shipping Cost</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Action</th>
+
+            </tr>
+            </thead>
+            <tbody>
+              {{#each orders}}
+            <tr order="{{this.orderID}}">
+                <td>{{this.orderID}}</td>
+                <td>{{this.userID}}</td>
+                <td>
+                  {{#each this.productIDs}}
+                  <a onclick="getProduct({{this}})" class="trigger" data-modal-trigger="trigger-1" href="javascript:;">{{this}}</a>
+                  {{/each}}
+                </td>
+                <td>{{this.date}}</td>
+                <td>{{this.userStreet}}</td>
+                <td>{{this.userCity}}</td>
+                <td>{{this.userState}}</td>
+                <td>{{this.userZipcode}}</td>
+                <td>${{this.cartAmount}}</td>
+                <td>${{this.cartShippingCost}}</td>
+                <td>${{this.cartTotal}}</td>
+                <td order-status="{{this.orderID}}">{{this.orderStatus}}</td>
+                <td><a onclick="getProducts({{this.orderID}}, '{{this.productIDs}}', {{this.cartAmount}}, {{this.cartShippingCost}}, {{this.cartTotal}}, '{{this.shippingNumber}}')" class="trigger" data-modal-trigger="trigger-2" href="javascript:;">Process</a></td>
+
+            </tr>
+            {{/each}}
+            <tbody>
+        </table>
+    </div>
+    <!-- Products table end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+</main>
+
+<!-- Scripts -->
+<script type="text/javascript" src="/js/admin/products.js" class="reload"></script>
+<script type="text/javascript" src="/js/admin/edit-product-fetch-info.js" class="reload"></script>
+<!-- Scripts end -->
+
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Home | Your Store's Name</title>
+
+
+    <link href="/css/admin/admin.css" rel="stylesheet">
+    <link href="/css/admin/products.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js" integrity="sha512-VZ6m0F78+yo3sbu48gElK4irv2dzPoep8oo9LEjxviigcnnnNvnTOJRSrIhuFk68FMLOpiNz+T77nNY89rnWDg==" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/js/admin/settings.js"></script>
+    <style>
+    #settings-form {
+      display: flex;
+      flex-direction: column;
+      width: 20em;
+      color: #795a5a;
+    }
+    #settings-form input, button {
+      margin-bottom: 1em;
+    }
+
+    #settings-form input {
+      color: #795a5a;
+      height: 35px;;
+    }
+
+    #setting-form-button {
+      height: 32px;
+      width: 73px;
+      margin-top: 1em;
+      color: #795a5a;
+    }
+
+    #setting-form-button:hover {
+      background-color: rgb(230, 230, 230);
+    }
+
+    #setting-form-button:active {
+      background-color: rgb(211, 207, 207);
+    }
+
+
+    </style>
+  </head>
+<body>
+<nav class="menu" tabindex="0">
+	<div class="smartphone-menu-trigger"></div>
+  <header class="avatar">
+    <h2>
+      {{admin.email}}
+    </h2>
+  </header>
+  <ul>
+    <li tabindex="0" class="icon-dashboard"><a href="/admin/dashboard">Dashboard</a></li>
+    <li tabindex="0" class="icon-products"><a href="/admin/products">Products</a></li>
+    <li tabindex="0" class="icon-orders"><a href="/admin/orders">Orders</a></li>
+    <li tabindex="0" class="icon-analytics"><a href="/admin/analytics">Analytics</a></li>
+    <li tabindex="0" class="icon-settings"><a href="/admin/settings">Settings</a></li>
+    <li tabindex="0" ><a href="/admin/logout">Logout</a></li>
+  </ul>
+</nav>
+
+<main>
+
+  <div class="helper">
+
+    <div style="text-align: center">
+      <div style="display: inline-block">
+        <div id="settings-form">
+            <h3>Address</h3>
+            <input id="storeStreet" onclick="this.value=''" type="text" placeholder="Store Street" value="{{#if settings.storeStreet}}{{settings.storeStreet}}{{else}}Store Street{{/if}}" />
+            <input id="storeCity" onclick="this.value=''" type="text" placeholder="Store City" value="{{#if settings.storeCity}}{{settings.storeCity}}{{else}}Store City{{/if}}" />
+            <input id="storeState" onclick="this.value=''" type="text" placeholder="Store State" value="{{#if settings.storeState}}{{settings.storeState}}{{else}}Store State{{/if}}" />
+            <input id="storeZipcode" onclick="this.value=''" placeholder="Store Zipcode" type="text" value="{{#if settings.storeZipcode}}{{settings.storeZipcode}}{{else}}Store Zipcode *{{/if}}" />
+
+            <h3>Socal Media</h3>
+            <input id="storeFacebook" onclick="this.value=''" type="text" placeholder="Facebook" value="{{#if settings.storeFacebook}}{{settings.storeFacebook}}{{else}}Facebook{{/if}}" />
+            <input id="storeTwitter" onclick="this.value=''" type="text" placeholder="Twitter" value="{{#if settings.storeTwitter}}{{settings.storeTwitter}}{{else}}Twitter{{/if}}" />
+            <input id="storeLinkedin" onclick="this.value=''" type="text" placeholder="Linkedin" value="{{#if settings.storeLinkedin}}{{settings.storeLinkedin}}{{else}}Linkedin{{/if}}" />
+            <div><button onclick="updateSettings()" id="setting-form-button">Update</button></div>
+            <div style="margin-top: 2em"><p id="errorMessage" style="color: red; text-align: center; display: none"></p></div>
+        </div>
+
+      </div>
+
+
+
+
+
+
+
+    </div>
+
+
+
+
+  </div>
+</main>
+
+<!-- Scripts -->
+
+<!-- Scripts end -->
+
+</body>
+</html>

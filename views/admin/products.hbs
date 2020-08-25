@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Home | Your Store's Name</title>
+    <link href="/css/admin/admin.css" rel="stylesheet">
+    <link href="/css/admin/products.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js" integrity="sha512-VZ6m0F78+yo3sbu48gElK4irv2dzPoep8oo9LEjxviigcnnnNvnTOJRSrIhuFk68FMLOpiNz+T77nNY89rnWDg==" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/js/admin/remove-product.js"></script>
+    <script type="text/javascript" src="/js/admin/add-product.js"></script>
+    <script type="text/javascript" src="/js/admin/edit-product.js"></script>
+  </head>
+<body>
+<nav class="menu" tabindex="0">
+	<div class="smartphone-menu-trigger"></div>
+  <header class="avatar">
+    <h2>
+      {{admin.email}}
+    </h2>
+  </header>
+  <ul>
+    <li tabindex="0" class="icon-dashboard"><a href="/admin/dashboard">Dashboard</a></li>
+    <li tabindex="0" class="icon-products"><a href="/admin/products">Products</a></li>
+    <li tabindex="0" class="icon-orders"><a href="/admin/orders">Orders</a></li>
+    <li tabindex="0" class="icon-analytics"><a href="/admin/analytics">Analytics</a></li>
+    <li tabindex="0" class="icon-settings"><a href="/admin/settings">Settings</a></li>
+    <li tabindex="0" ><a href="/admin/logout">Logout</a></li>
+  </ul>
+</nav>
+
+<main>
+
+  <div class="helper">
+
+
+<!-- span -->
+
+
+
+
+<!-- Add product popup window -->
+
+
+
+<button class="trigger learn-more" data-modal-trigger="trigger-1">Add Product</button>
+<div class="modal" data-modal="trigger-1">
+  <article class="content-wrapper">
+    <button class="close"></button>
+    <div class="content">
+
+
+
+
+      <div class="centered">
+        <div id="product-add-message">
+          <h2></h2>
+        </div>
+
+  <div class="group">
+    <input class="product-input" type="text" id="pn" required="required"/>
+    <label class="product-name" for="pn">Name</label>
+    <div class="bar"></div>
+  </div>
+
+  <div class="group">
+    <input class="product-input" type="text" id="pd" required="required"/>
+    <label class="product-name" for="pd">Description</label>
+    <div class="bar"></div>
+  </div>
+
+  <div class="group">
+    <input class="product-input" type="text" id="pw" required="required"/>
+    <label class="product-name" for="pw">Weight (lbs)</label>
+    <div class="bar"></div>
+  </div>
+
+
+  <div class="group">
+    <input class="product-input" type="text" id="pp" required="required"/>
+    <label class="product-name" for="pp">Price</label>
+    <div class="bar"></div>
+  </div>
+
+
+  <div>
+
+    <input type="file" id="pi" accept="image/*" />
+
+
+
+
+  </div>
+
+
+</div>
+
+
+    </div>
+    <footer class="modal-footer">
+      <button style="margin-bottom: 1em" class="action" onclick="addProduct()">Add</button>
+    </footer>
+  </article>
+</div>
+
+
+<!-- Add product popup window end -->
+
+
+
+
+
+
+
+<!-- new popup window -->
+
+
+
+
+<div class="modal" data-modal="trigger-2">
+  <article class="content-wrapper">
+    <button class="close"></button>
+    <div class="content">
+
+
+
+
+      <div class="centered">
+<h2 id="product-edit-message"></h2>
+
+  <div class="group">
+    <input class="product-input" type="text" id="pn-edit" onchange="valueChange('pn')" required="required"/>
+    <label class="product-name" for="pn">Name</label>
+    <div class="bar"></div>
+  </div>
+
+  <div class="group">
+    <input class="product-input" type="text" id="pd-edit" onchange="valueChange('pd')" required="required"/>
+    <label class="product-name" for="pd-edit">Description</label>
+    <div class="bar"></div>
+  </div>
+
+  <div class="group">
+    <input class="product-input" type="text" id="pw-edit" onchange="valueChange('pw')" required="required"/>
+    <label class="product-name" for="pw-edit">Weight (lbs)</label>
+    <div class="bar"></div>
+  </div>
+
+
+  <div class="group">
+    <input class="product-input" type="text" id="pp-edit" onchange="valueChange('pp')" required="required"/>
+    <label class="product-name" for="pp-edit">Price</label>
+    <div class="bar"></div>
+  </div>
+
+
+  <div>
+
+    <input type="file" id="pi-edit" accept="image/*" />
+
+
+
+
+  </div>
+
+
+</div>
+
+
+    </div>
+    <footer class="modal-footer">
+      <button class="action" onclick="editProduct()">Edit</button>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+<!-- end of new popup window -->
+
+<!-- Procuts table -->
+
+<div class="table-wrapper" {{#if products.length}} {{else}} style = "display: none" {{/if}}>
+    <table class="fl-table">
+        <thead>
+        <tr>
+            <th><input type="checkbox" /></th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Weight(lbs)</th>
+            <th>Price</th>
+            <th>Status</th>
+            <th>Admin</th>
+            <th>Insertion Date</th>
+            <th>Image</th>
+            <th>Action</th>
+
+        </tr>
+        </thead>
+        <tbody>
+          {{#each products}}
+        <tr>
+            <td><input type="checkbox" /></td>
+            <td>{{this.productID}}</td>
+            <td>{{this.productName}}</td>
+            <td>{{this.productDesc}}</td>
+            <td>{{this.productWeight}}</td>
+            <td>{{this.productPrice}}</td>
+            <td>{{this.productStatus}}</td>
+            <td>{{this.adminID}}</td>
+            <td>{{this.insertionDate}}</td>
+            <td><img class="product-image" src="{{this.productImage}}" /></td>
+            <td><a href="javascript:;" class="trigger" data-modal-trigger="trigger-2" product-id="{{this.productID}}" onclick="fetchProductInformation({{this.productID}})">Edit</a><br>
+              <a href="javascript:;" product-id="{{this.productID}}" onclick="removeProduct({{this.productID}})">Remove</a></td>
+        </tr>
+        {{/each}}
+        <tbody>
+    </table>
+</div>
+<!-- Products table end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+</main>
+
+<!-- Scripts -->
+<script type="text/javascript" src="/js/admin/products.js" class="reload"></script>
+<script type="text/javascript" src="/js/admin/edit-product-fetch-info.js" class="reload"></script>
+<!-- Scripts end -->
+
+</body>
+</html>

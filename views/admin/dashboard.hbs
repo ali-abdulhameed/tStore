@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Home | Your Store's Name</title>
+    <link href="/css/admin/admin.css" rel="stylesheet">
+    <link href="/css/admin/products.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js" integrity="sha512-VZ6m0F78+yo3sbu48gElK4irv2dzPoep8oo9LEjxviigcnnnNvnTOJRSrIhuFk68FMLOpiNz+T77nNY89rnWDg==" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+  </head>
+<body>
+<nav class="menu" tabindex="0">
+	<div class="smartphone-menu-trigger"></div>
+  <header class="avatar">
+    <h2>
+      {{admin.email}}
+    </h2>
+  </header>
+  <ul>
+    <li tabindex="0" class="icon-dashboard"><a href="/admin/dashboard">Dashboard</a></li>
+    <li tabindex="0" class="icon-products"><a href="/admin/products">Products</a></li>
+    <li tabindex="0" class="icon-orders"><a href="/admin/orders">Orders</a></li>
+    <li tabindex="0" class="icon-analytics"><a href="/admin/analytics">Analytics</a></li>
+    <li tabindex="0" class="icon-settings"><a href="/admin/settings">Settings</a></li>
+    <li tabindex="0" ><a href="/admin/logout">Logout</a></li>
+  </ul>
+</nav>
+
+<main>
+
+  <div class="helper">
+
+
+    <div style="text-align: center; margin-top: 2em">
+      <div style="display: inline-block">
+
+        <table>
+          <tr>
+            <td><p style="text-align: left; margin-left: 1.4em">Today's stats</p></td>
+          </tr>
+          <tr>
+
+
+              <td>
+
+
+                <div class="courses-container">
+                  <div class="course">
+                    <div class="course-preview">
+                      <h2 style="margin-top: 1.2em">Revenue</h2>
+                    </div>
+                    <div class="course-info">
+                      <h2>${{stats.orders.todaysRev}}</h2>
+                    </div>
+                  </div>
+                </div>
+
+
+              </td>
+              <td>
+              <div class="courses-container">
+              	<div class="course">
+              		<div class="course-preview">
+              			<h2>UNPROCESSED ORDERS</h2>
+              		</div>
+              		<div class="course-info">
+              			<h2>{{stats.orders.number}}</h2>
+              		</div>
+              	</div>
+              </div>
+
+
+
+            </td>
+            <td>
+
+
+              <div class="courses-container">
+              	<div class="course">
+              		<div class="course-preview">
+              			<h2>NEW PRODUCTS</h2>
+              		</div>
+              		<div class="course-info">
+              			<h2>{{stats.products}}</h2>
+              		</div>
+              	</div>
+              </div>
+
+
+            </td>
+
+          </tr>
+          <tr>
+
+
+            <td>
+
+
+              <div class="courses-container">
+              	<div class="course">
+              		<div class="course-preview">
+              			<h2>NEW USERS</h2>
+              		</div>
+              		<div class="course-info">
+              			<h2>{{stats.users}}</h2>
+              		</div>
+              	</div>
+              </div>
+
+
+            </td>
+
+
+
+
+
+          </tr>
+
+          <tr style="height: 7em"></tr>
+
+          <tr>
+            <td></td>
+            <td><div id="pi-chart"></div></td>
+          </tr>
+            </table>
+      </div>
+
+
+
+
+
+
+
+    </div>
+
+
+
+
+  </div>
+</main>
+
+<!-- Scripts -->
+<script>
+
+
+      var params = {
+  hAxis: {
+    titleTextStyle: {color: '#607d8b'},
+    gridlines: { count:0},
+    textStyle: { color: '#b0bec5', fontName: 'Roboto', fontSize: '12', bold: true}
+  },
+  vAxis: {
+    minValue: 0,
+    gridlines: {color:'#37474f', count:4},
+    baselineColor: 'transparent'
+  },
+  legend: {position: 'top', alignment: 'center', textStyle: {color:'#607d8b', fontName: 'Roboto', fontSize: '12'} },
+  colors: ["#3f51b5","#2196f3","#03a9f4","#00bcd4","#009688","#4caf50","#8bc34a","#cddc39"],
+  areaOpacity: 0.24,
+  lineWidth: 1,
+  backgroundColor: 'transparent',
+  chartArea: {
+    backgroundColor: "transparent",
+    width: '100%',
+    height: '80%'
+  },
+      height:400, // example height, to make the demo charts equal size
+      width:600,
+      pieSliceBorderColor: '#263238',
+      pieSliceTextStyle:  {color:'#607d8b' },
+      pieHole: 0.9,
+      bar: {groupWidth: "40" },
+      colorAxis: {colors: ["#3f51b5","#2196f3","#03a9f4","#00bcd4"] },
+      backgroundColor: 'transparent',
+      datalessRegionColor: '#37474f',
+      displayMode: 'regions'
+    }
+
+
+
+
+    google.charts.load('current', {'packages':['geochart', 'corechart', 'bar']});
+
+    google.charts.setOnLoadCallback(piChart);
+
+      function piChart() {
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Date');
+        data.addColumn('number', 'Numbers');
+        data.addRows([
+          [`Today`, parseInt(`{{stats.orders.todaysRev}}`)],
+          ['Yesterday', parseInt(`{{stats.orders.yesterdaysRev}}`)],
+        ]);
+
+        var options = {title: `Revenue: Today vs. Yesterday`,
+                       ...params};
+
+        var formatter = new google.visualization.NumberFormat({prefix: '$'})
+        formatter.format(data, 1);
+
+        var chart = new google.visualization.PieChart(document.getElementById('pi-chart'));
+        chart.draw(data, options);
+      }
+
+
+</script>
+<!-- Scripts end -->
+
+</body>
+</html>
