@@ -29,6 +29,9 @@ APIs:
 - Uses Paypal APIs for payment processing.
 - Uses USPS APIs for getting shipping cost estimate and tracking infromation.
 
+# Note
+I built this app as a class project and due to time constraints I didn't heavily test it. Thereby, I don't recommand using it as a final product on its own.
+
 # Screenshots
 
 User side:
